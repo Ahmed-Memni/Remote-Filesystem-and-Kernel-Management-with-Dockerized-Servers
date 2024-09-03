@@ -76,7 +76,7 @@ If U-Boot is not configured, you need to set up the environment variables for ne
 
 ### Example Command
 
-If your root filesystem is in /nfs and your kernel is in /tftp, use:
+I uploaded an example of a root filesystem  in /nfs and kernel is in /tftp for a card like Stm32, use:
 
 ./tftp_nfs_script ./nfs ./tftp
 
