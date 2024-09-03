@@ -76,7 +76,7 @@ If U-Boot is not configured, you need to set up the environment variables for ne
 
 ### Example Command
 
-If your root filesystem is in /rootfs and your kernel is in /kernel, use:
+If your root filesystem is in /nfs and your kernel is in /tftp, use:
 
 ./tftp_nfs_script ./nfs ./tftp
 
@@ -84,7 +84,7 @@ If your root filesystem is in /rootfs and your kernel is in /kernel, use:
 
 If you need to clone from Git repositories, use:
 
-./tftp_nfs_script https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git
+./tftp_nfs_script https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git  https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git
 
 
 
