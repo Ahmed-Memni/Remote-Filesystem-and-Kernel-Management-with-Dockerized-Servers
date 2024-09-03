@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Get directories or repository URLs from command-line arguments
+NFS_INPUT="$1"
+TFTP_INPUT="$2"
+
+# Handle NFS directory or GitHub repository URL
+if [[ "$NFS_INPUT" == *"git.com"* ]]; then
+    if [ ! -d "./nfs" ]; then
+        echo "Creating directory ./nfs..."
+        mkdir -p "./nfs"
+    fi
+    echo "Cloning repository from $NFS_INPUT into ./nfs..."
+    git clone "$NFS_INPUT" "./nfs"
+    NFS_DIR="./nfs"
+else
+    NFS_DIR="$NFS_INPUT"
+fi
+
+# Handle TFTP directory or GitHub repository URL
+if [[ "$TFTP_INPUT" == *"git.com"* ]]; then
+    if [ ! -d "./tftp" ]; then
+        echo "Creating directory ./tftp..."
+        mkdir -p "./tftp"
+    fi
+    echo "Cloning repository from $TFTP_INPUT into ./tftp..."
+    git clone "$TFTP_INPUT" "./tftp"
+    TFTP_DIR="./tftp"
+else
+    TFTP_DIR="$TFTP_INPUT"
+fi
+
+# Create Docker macvlan network
+echo "Creating Docker macvlan network..." docker network create -d macvlan --subnet=192.168.0.0/24 --gateway=192.168.0.1   -o parent=enp4s0   my_macvlan_net
+
+# Build Docker image
+echo "Building Docker image..."
+docker build -t tftpnfs .
+
+# Run Docker container
+echo "Running Docker container..."
+docker run -d --name tftp-nfs-server  --network my_macvlan_net   --ip 192.168.0.9  --privileged   -v $NFS_DIR:/nfs  -v $TFTP_DIR:/var/lib/tftpboot  -p 2088:2049   -p 69:69/udp   tftpnfs
+
+echo "Docker setup complete."

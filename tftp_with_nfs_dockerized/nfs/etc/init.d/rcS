@@ -1,0 +1,4 @@
+#!/bin/sh
+mount -t proc proc /home/ahmed/embedded-linux-labs/tinysystem/nfsroot/proc
+mount -t sysfs sysfs /home/ahmed/embedded-linux-labs/tinysystem/nfsroot/sys
+

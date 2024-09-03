@@ -1,0 +1,23 @@
+# Use an Ubuntu base image l'image 24.04 et 22.04 sont les plus stable
+FROM ubuntu:24.04
+
+# Install necessary packages, including TFTP-HPA, NFS, and UFW portmapper(rpcbind needed for nfs)
+RUN apt-get update && \
+    apt-get install -y tftpd-hpa nfs-kernel-server nfs-common rpcbind ufw && \
+    apt-get clean
+
+# Create directories for TFTP and NFS root ou je met les volume
+RUN mkdir -p /var/lib/tftpboot /nfs && \
+    chown nobody:nogroup /nfs
+
+# Copy the TFTP configuration file into the container file exists in the folder u can configure it however u want 
+COPY tftpd-hpa /etc/default/tftpd-hpa
+
+# Configure NFS exports /nfs path de folder que je l'utilise * pour tous l'adresse rights rw readwrite sync syncing of folders inside and outside the countainer no-subtree-check no permissions
+RUN echo "/nfs *(rw,sync,no_subtree_check)" > /etc/exports
+
+# Expose TFTP (UDP 69) and NFS (2049) ports
+EXPOSE 69/udp 2049
+
+# Start TFTP and NFS servers, disable UFW, and keep the container running 
+CMD ["bash", "-c", "ufw disable && mkdir -p /run/rpcbind && rpcbind && rpc.statd && rpc.mountd && rpc.nfsd 8 && exportfs -rav && in.tftpd --foreground --secure /var/lib/tftpboot && tail -f /dev/null"]
