@@ -25,8 +25,6 @@ If U-Boot is not configured, you need to set up the environment variables for ne
 1. **Install picocom (if not already installed):**
 
    
-
-bash
    sudo apt-get install picocom
 
 
@@ -35,18 +33,13 @@ bash
 
    Connect to your device using picocom and set the following environment variables:
 
-   
-
-bash
    picocom /dev/ttyACM0 -b 115200
 
 
 
    Inside picocom, enter the following commands:
 
-   
 
-bash
    setenv ipaddr 192.168.0.100
    setenv serverip 192.168.0.9
    setenv bootargs "console=ttySTM0,115200 root=/dev/nfs ip=192.168.0.1 nfsroot=192.168.0.9:/nfs,nfsvers=3,tcp rw init=/bin/sh"
@@ -65,8 +58,6 @@ bash
 1. **Navigate to the Script Directory:**
 
    
-
-bash
    cd /test_script
 
 
@@ -76,8 +67,6 @@ bash
    Execute the script with the paths or Git repository links for the root filesystem and kernel:
 
    
-
-bash
    ./tftp_nfs_script <path_to_root_filesystem_or_git_repo> <path_to_kernel_or_git_repo>
 
 
@@ -89,19 +78,16 @@ bash
 
 If your root filesystem is in /rootfs and your kernel is in /kernel, use:
 
-bash
 ./tftp_nfs_script ./nfs ./tftp
 
 
 
 If you need to clone from Git repositories, use:
 
-bash
 ./tftp_nfs_script https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git
 
 
 
 Make sure the script has executable permissions. If not, set them with:
 
-bash
 chmod +x tftp_nfs_script
