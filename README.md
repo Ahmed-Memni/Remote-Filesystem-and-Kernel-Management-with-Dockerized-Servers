@@ -82,11 +82,6 @@ I uploaded an example of a root filesystem  in /nfs and kernel is in /tftp for a
 
 
 
-If you need to clone from Git repositories, use:
-
-./tftp_nfs_script https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git  https://github.com/username/rootfs-repo.git https://github.com/username/kernel-repo.git
-
-
 
 Make sure the script has executable permissions. If not, set them with:
 
